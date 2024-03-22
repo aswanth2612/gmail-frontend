@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const API_URL = `${process.env.API}`;
+const API_URL = process.env.API;
 
 const API_GMAIL = async (urlObject, payload, type) => {
     return await axios({
