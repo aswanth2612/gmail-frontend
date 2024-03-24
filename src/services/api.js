@@ -1,11 +1,14 @@
 import axios from 'axios';
 
-const API_GMAIL = async (urlObject, payload, type) => {
-    console.log(import.meta.env.VITE_APP_API_URL + urlObject.endpoint + type);
+const API_URI = 'https://gmailclone-backend-olkn.onrender.com'
+
+const API_GMAIL = async (serviceUrlObject, requestData = {}, type) => {
+    const { params, urlParams, ...body } = requestData;
+
     return await axios({
-        method: urlObject.method,
-        url: `${import.meta.env.VITE_APP_API_URL}/${urlObject.endpoint}/${type}`,
-        data: payload
+        method: serviceUrlObject.method,
+        url: `${API_URI}/${serviceUrlObject.endpoint}/${type}`,
+        data: requestData
     })
 }
 
