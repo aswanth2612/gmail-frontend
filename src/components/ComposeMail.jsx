@@ -41,7 +41,7 @@ const Footer = styled(Box)({
     display: 'flex',
     justifyContent: 'space-between',
     padding: '10px 15px',
-    alignItems: 'center'  
+    alignItems: 'center'
 })
 
 const SendButton = styled(Button)({
@@ -53,17 +53,17 @@ const SendButton = styled(Button)({
     width: 100
 })
 
-const ComposeMail = ( { openDialog, setOpenDialog }) => {
+const ComposeMail = ({ openDialog, setOpenDialog }) => {
 
     const [data, setData] = useState({});
     const sentEmailService = useApi(API_URLS.saveSentEmail);
     const saveDraftService = useApi(API_URLS.saveDraftEmails);
 
     const config = {
-        Host : "smtp.elasticemail.com",
-        Username : import.meta.env.VITE_APP_USERNAME,
-        Password : import.meta.env.VITE_APP_PASSWORD,
-        Port : 2525,
+        Host: "smtp.elasticemail.com",
+        Username: import.meta.env.VITE_APP_USERNAME,
+        Password: import.meta.env.VITE_APP_PASSWORD,
+        Port: 2525,
     }
 
     const closeComposeMail = (e) => {
@@ -80,59 +80,58 @@ const ComposeMail = ( { openDialog, setOpenDialog }) => {
             starred: false,
             type: 'drafts'
         }
-    
+
         saveDraftService.call(payload);
-    
+
         if (!saveDraftService.error) {
             setOpenDialog(false);
             setData({});
         } else {
-            
+
         }
     }
 
     const sendMail = (e) => {
         e.preventDefault();
 
-        if (window.Email){
+        if (window.Email) {
             window.Email.send({
-            ...config,
-            To : data.to,
-            From : "aswanthmmg@gmail.com",
-            Subject : data.subject,
-            Body : data.body
-        }).then(
-          message => alert(message)
-        );
-    }
+                ...config,
+                To: data.to,
+                From: "aswanthmmg@gmail.com",
+                Subject: data.subject,
+                Body: data.body
+            }).then(
+                message => alert(message)
+            );
+        }
 
-    const payload = {
-        to: data.to,
-        from: 'aswanthmmg@gmail.com',
-        subject: data.subject,
-        body: data.body,
-        date: new Date(),
-        image: '',
-        name: 'aswanth',
-        starred: false,
-        type: 'sent'
-    }
+        const payload = {
+            to: data.to,
+            from: 'aswanthmmg@gmail.com',
+            subject: data.subject,
+            body: data.body,
+            date: new Date(),
+            image: '',
+            name: 'aswanth',
+            starred: false,
+            type: 'sent'
+        }
 
-    sentEmailService.call(payload);
+        sentEmailService.call(payload);
 
-    if (!sentEmailService.error) {
-        setOpenDialog(false);
-        setData({});
-    } else {
-        
-    }
-        
+        if (!sentEmailService.error) {
+            setOpenDialog(false);
+            setData({});
+        } else {
+
+        }
+
         setOpenDialog(false);
     }
 
     const onValueChange = (e) => {
-        setData({...data, [e.target.name]: e.target.value})
-        console.log(data);
+        setData({ ...data, [e.target.name]: e.target.value })
     }
 
     return (
@@ -142,22 +141,22 @@ const ComposeMail = ( { openDialog, setOpenDialog }) => {
         >
             <Header>
                 <Typography>New Message</Typography>
-                <Close fontSize="small" onClick={(e) => closeComposeMail(e)}/>
+                <Close fontSize="small" onClick={(e) => closeComposeMail(e)} />
             </Header>
             <ReceipientsWrapper>
-                <InputBase placeholder="Receipients" name="to" onChange={(e) => onValueChange(e)}/>
-                <InputBase placeholder="Subject"  name="subject" onChange={(e) => onValueChange(e)}/>     
+                <InputBase placeholder="Receipients" name="to" onChange={(e) => onValueChange(e)} />
+                <InputBase placeholder="Subject" name="subject" onChange={(e) => onValueChange(e)} />
             </ReceipientsWrapper>
-            <TextField 
-               multiline
-               rows={20}
-               sx={{ '& .MuiOutlinedInput-notchedOutline ': { border: 'none'}}}
-               onChange={(e) => onValueChange(e)}
-               name="body"
+            <TextField
+                multiline
+                rows={20}
+                sx={{ '& .MuiOutlinedInput-notchedOutline ': { border: 'none' } }}
+                onChange={(e) => onValueChange(e)}
+                name="body"
             />
             <Footer>
                 <SendButton onClick={(e) => sendMail(e)}>Send</SendButton>
-                <DeleteOutlined onClick={() => setOpenDialog(false)}/>
+                <DeleteOutlined onClick={() => setOpenDialog(false)} />
             </Footer>
         </Dialog>
     )

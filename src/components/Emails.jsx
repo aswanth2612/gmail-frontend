@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useOutletContext, useParams, useNavigate } from 'react-router-dom';
 import { API_URLS } from "../services/api.urls";
 import useApi from '../hooks/useApi';
 import { Checkbox, Box, List, ListItem } from '@mui/material';
@@ -7,10 +7,25 @@ import { DeleteOutlined } from '@mui/icons-material';
 import Email from "./Email";
 import NoMails from '../components/common/NoMails';
 import { EMPTY_TABS } from '../constants/constant';
+import axios from 'axios'
 
 const Emails = () => {
-    const [selectedEmails, setSelectedEmails ] = useState([]);
-    const [refreshScreen, setRefreshScreen ] = useState(false);
+
+    const navigate = useNavigate()
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+        axios.get('http://localhost:8000/verify')
+            .then(res => {
+                if (res.data.status) {
+                    alert("Successfully Logged in")
+                } else {
+                    navigate('/login')
+                }
+            })
+    }, []);
+
+    const [selectedEmails, setSelectedEmails] = useState([]);
+    const [refreshScreen, setRefreshScreen] = useState(false);
 
     const { openDrawer } = useOutletContext();
 
@@ -24,9 +39,9 @@ const Emails = () => {
         getEmailServices.call({}, type);
     }, [type, refreshScreen])
 
-    const selectAllEmails  = (e) => {
+    const selectAllEmails = (e) => {
         if (e.target.checked) {
-            const emails = getEmailServices?.response?.map(email => email._id);
+            const emails = getEmailServices ?.response ?.map(email => email._id);
             setSelectedEmails(emails);
         } else {
             setSelectedEmails([]);
@@ -43,28 +58,28 @@ const Emails = () => {
     }
 
     return (
-        <Box style={ openDrawer ? { marginLeft: 250, width: 'calc(100% - 250px)' } : { width: '100%' }}>
-             
-             <Box style={{padding: '20px 10px 0 10px', display: 'flex', alignItems: 'center' }}>
-                 <Checkbox size="small" onChange={(e) =>selectAllEmails(e)}/>
-                 <DeleteOutlined onClick={(e) => deleteSelectedEmails(e)}/>
-             </Box>
-             <List>
-                 {
-                     getEmailServices?.response?.map(email =>(
-                         <Email 
+        <Box style={openDrawer ? { marginLeft: 250, width: 'calc(100% - 250px)' } : { width: '100%' }}>
+
+            <Box style={{ padding: '20px 10px 0 10px', display: 'flex', alignItems: 'center' }}>
+                <Checkbox size="small" onChange={(e) => selectAllEmails(e)} />
+                <DeleteOutlined onClick={(e) => deleteSelectedEmails(e)} />
+            </Box>
+            <List>
+                {
+                    getEmailServices ?.response ?.map(email => (
+                        <Email
                             key={email._id}
                             email={email}
                             selectedEmails={selectedEmails}
                             setRefreshScreen={setRefreshScreen}
                             setSelectedEmails={setSelectedEmails}
-                         />
-                     ))
+                        />
+                    ))
                  }
-             </List>
-             {
-                 getEmailServices?.response?.length === 0 &&
-                       <NoMails message={EMPTY_TABS[type]} />
+            </List>
+            {
+                getEmailServices ?.response ?.length === 0 &&
+                    <NoMails message={EMPTY_TABS[type]} />
              }
         </Box>
     )
