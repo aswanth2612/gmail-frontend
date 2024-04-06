@@ -15,7 +15,7 @@ const Emails = ({ state }) => {
     const navigate = useNavigate();
     Axios.defaults.withCredentials = true;
     useEffect(() => {
-        Axios.get(import.meta.env.VITE_FRONT_PATH + '/verify')
+        Axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify')
             .then(res => {
                 if (res.data.status) {
                 } else {

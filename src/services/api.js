@@ -9,7 +9,7 @@ const API_GMAIL = async (serviceUrlObject, requestData = {}, type) => {
 
     return await axios({
         method: serviceUrlObject.method,
-        url: `${import.meta.env.VITE_FRONT_PATH}/${serviceUrlObject.endpoint}/${type}`,
+        url: `${import.meta.env.VITE_BACKEND_PATH}/${serviceUrlObject.endpoint}/${type}`,
         params: requestData,
         data: requestData
     })

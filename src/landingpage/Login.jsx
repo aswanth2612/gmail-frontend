@@ -17,7 +17,7 @@ const Login = () => {
     Axios.defaults.withCrendentials = true;
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.post(import.meta.env.VITE_FRONT_PATH + '/login', { email, password }).then(response => {
+        Axios.post(import.meta.env.VITE_BACKEND_PATH + '/login', { email, password }).then(response => {
             if (response.data.status) {
                 setUser({ username: response.data.username, email: response.data.email });
                 dispatch({

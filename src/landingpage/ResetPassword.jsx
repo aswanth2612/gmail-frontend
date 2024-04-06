@@ -12,7 +12,7 @@ const ResetPassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Axios.post(import.meta.env.VITE_FRONT_PATH + "/reset-password/" + token, { password }).then(response => {
+        Axios.post(import.meta.env.VITE_BACKEND_PATH + "/reset-password/" + token, { password }).then(response => {
             if (response.data.status) {
                 navigate('/login')
             }
