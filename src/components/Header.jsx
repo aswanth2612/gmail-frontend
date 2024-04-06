@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AppBar, Toolbar, IconButton, styled, InputBase, Box, Popover, Button, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -53,7 +53,7 @@ const Header = ({ toggleDrawer }) => {
     axios.defaults.withCrendentials = true;
     const handleLogout = (e) => {
         e.preventDefault()
-        axios.get('http://localhost:8000/logout', {}).then(response => {
+        axios.get(import.meta.env.VITE_FRONT_PATH + '/logout', {}).then(response => {
             navigate('/login')
         }).catch(err => {
         })

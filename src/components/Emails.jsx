@@ -10,12 +10,12 @@ import { EMPTY_TABS } from '../constants/constant';
 import Axios from 'axios'
 import { useUser } from '../provider/UserProvider';
 
-const Emails = ({state}) => {
+const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
     Axios.defaults.withCredentials = true;
     useEffect(() => {
-        Axios.get('http://localhost:8000/verify')
+        Axios.get(import.meta.env.VITE_FRONT_PATH + '/verify')
             .then(res => {
                 if (res.data.status) {
                 } else {
@@ -31,13 +31,13 @@ const Emails = ({state}) => {
 
     const params = useParams();
     const type = params.type;
-    
+
     const getEmailServices = useApi(API_URLS.getEmailFromType);
     const moveEmailsToBinService = useApi(API_URLS.moveEmailsToBin);
     const deleteEmailService = useApi(API_URLS.deleteEmail);
 
     useEffect(() => {
-        getEmailServices.call({to:currentUser.email}, type);
+        getEmailServices.call({ to: currentUser.email }, type);
     }, [type, refreshScreen])
 
     const selectAllEmails = (e) => {

@@ -13,7 +13,7 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.post('http://localhost:8000/signup', { username, email, password }).then(response => {
+        Axios.post(import.meta.env.VITE_FRONT_PATH + '/signup', { username, email, password }).then(response => {
             if (response.data.status) {
                 navigate('/login')
             }

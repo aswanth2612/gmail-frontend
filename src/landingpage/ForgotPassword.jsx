@@ -10,7 +10,7 @@ const ForgotPassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Axios.post("http://localhost:8000/forgot-password", { email }).then(response => {
+        Axios.post(import.meta.env.VITE_FRONT_PATH + "/forgot-password", { email }).then(response => {
             if (response.data.status) {
                 alert("chech your email for reset password")
                 navigate('/login')
