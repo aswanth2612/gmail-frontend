@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import '../App.css';
 import Axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom';
+import { useUserDispatch } from '../provider/UserProvider';
 
 const Login = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const [user, setUser] = useState('');
+    const dispatch = useUserDispatch();
 
     const navigate = useNavigate()
 
@@ -15,7 +19,13 @@ const Login = () => {
         e.preventDefault()
         Axios.post('http://localhost:8000/login', { email, password }).then(response => {
             if (response.data.status) {
-                navigate('/')
+                setUser({ username: response.data.username, email: response.data.email });
+                dispatch({
+                    type: 'set',
+                    username: response.data.username,
+                    email: response.data.email
+                });
+                navigate('/email/index')
             }
         }).catch(err => {
         })

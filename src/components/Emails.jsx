@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useOutletContext, useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
+import { useOutletContext, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { API_URLS } from "../services/api.urls";
 import useApi from '../hooks/useApi';
 import { Checkbox, Box, List, ListItem } from '@mui/material';
@@ -7,17 +7,17 @@ import { DeleteOutlined } from '@mui/icons-material';
 import Email from "./Email";
 import NoMails from '../components/common/NoMails';
 import { EMPTY_TABS } from '../constants/constant';
-import axios from 'axios'
+import Axios from 'axios'
+import { useUser } from '../provider/UserProvider';
 
-const Emails = () => {
-
-    const navigate = useNavigate()
-    axios.defaults.withCredentials = true;
+const Emails = ({state}) => {
+    const currentUser = useUser();
+    const navigate = useNavigate();
+    Axios.defaults.withCredentials = true;
     useEffect(() => {
-        axios.get('http://localhost:8000/verify')
+        Axios.get('http://localhost:8000/verify')
             .then(res => {
                 if (res.data.status) {
-                    alert("Successfully Logged in")
                 } else {
                     navigate('/login')
                 }
@@ -29,14 +29,15 @@ const Emails = () => {
 
     const { openDrawer } = useOutletContext();
 
-    const { type } = useParams();
-
+    const params = useParams();
+    const type = params.type;
+    
     const getEmailServices = useApi(API_URLS.getEmailFromType);
     const moveEmailsToBinService = useApi(API_URLS.moveEmailsToBin);
     const deleteEmailService = useApi(API_URLS.deleteEmail);
 
     useEffect(() => {
-        getEmailServices.call({}, type);
+        getEmailServices.call({to:currentUser.email}, type);
     }, [type, refreshScreen])
 
     const selectAllEmails = (e) => {

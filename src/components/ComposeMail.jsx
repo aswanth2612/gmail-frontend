@@ -4,6 +4,7 @@ import { Dialog, Box, Typography, styled, InputBase, TextField, Button } from '@
 import { Close, DeleteOutlined } from '@mui/icons-material';
 import useApi from '../hooks/useApi';
 import { API_URLS } from '../services/api.urls';
+import { useUser } from '../provider/UserProvider';
 
 const dialogStyle = {
     height: '90%',
@@ -55,28 +56,23 @@ const SendButton = styled(Button)({
 
 const ComposeMail = ({ openDialog, setOpenDialog }) => {
 
+    const currentUser = useUser();
+
     const [data, setData] = useState({});
     const sentEmailService = useApi(API_URLS.saveSentEmail);
     const saveDraftService = useApi(API_URLS.saveDraftEmails);
-
-    const config = {
-        Host: "smtp.elasticemail.com",
-        Username: import.meta.env.VITE_APP_USERNAME,
-        Password: import.meta.env.VITE_APP_PASSWORD,
-        Port: 2525,
-    }
 
     const closeComposeMail = (e) => {
         e.preventDefault();
 
         const payload = {
             to: data.to,
-            from: 'aswanthmmg@gmail.com',
+            from: currentUser.email,
             subject: data.subject,
             body: data.body,
             date: new Date(),
             image: '',
-            name: 'aswanth',
+            name: currentUser.username,
             starred: false,
             type: 'drafts'
         }
@@ -94,26 +90,14 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
     const sendMail = (e) => {
         e.preventDefault();
 
-        if (window.Email) {
-            window.Email.send({
-                ...config,
-                To: data.to,
-                From: "aswanthmmg@gmail.com",
-                Subject: data.subject,
-                Body: data.body
-            }).then(
-                message => alert(message)
-            );
-        }
-
         const payload = {
             to: data.to,
-            from: 'aswanthmmg@gmail.com',
+            from: currentUser.email,
             subject: data.subject,
             body: data.body,
             date: new Date(),
             image: '',
-            name: 'aswanth',
+            name: currentUser.username,
             starred: false,
             type: 'sent'
         }

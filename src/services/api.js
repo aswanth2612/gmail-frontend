@@ -12,6 +12,7 @@ const API_GMAIL = async (serviceUrlObject, requestData = {}, type) => {
     return await axios({
         method: serviceUrlObject.method,
         url: `${API_URI}/${serviceUrlObject.endpoint}/${type}`,
+        params: requestData,
         data: requestData
     })
 }
