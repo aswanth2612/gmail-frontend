@@ -31,7 +31,8 @@ function userReducer(user, action) {
     case 'set': {
       return {
         username: action.username,
-        email: action.email
+        email: action.email,
+        token: action.token
       };
     }
     default: {
@@ -41,5 +42,5 @@ function userReducer(user, action) {
 }
 
 const initialUser = [
-  { username: "", email: '' }
+  { username: "", email: '', token: '' }
 ];

@@ -17,18 +17,23 @@ const Login = () => {
         e.preventDefault()
         Axios.defaults.withCredentials = true;
         Axios.post(import.meta.env.VITE_BACKEND_PATH + '/login', { email, password },
-         { withCredentials: true }).then(response => {
-            if (response.data.status) {
-                setUser({ username: response.data.username, email: response.data.email });
-                dispatch({
-                    type: 'set',
-                    username: response.data.username,
-                    email: response.data.email
-                });
-                navigate('/email/index')
-            }
-        }).catch(err => {
-        })
+            { withCredentials: true }).then(response => {
+                if (response.data.status) {
+                    setUser({
+                        username: response.data.username,
+                        email: response.data.email,
+                        token: response.data.token
+                    });
+                    dispatch({
+                        type: 'set',
+                        username: response.data.username,
+                        email: response.data.email,
+                        token: response.data.token
+                    });
+                    navigate('/email/index')
+                }
+            }).catch(err => {
+            })
     }
 
     return (

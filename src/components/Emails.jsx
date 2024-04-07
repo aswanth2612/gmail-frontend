@@ -16,7 +16,10 @@ const Emails = ({ state }) => {
     useEffect(() => {
         Axios.defaults.withCredentials = true;
         Axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify', {
-            withCredentials: true
+            withCredentials: true,
+            header: {
+                Authoriation: 'Bearer ' + currentUser.token
+            }
         })
             .then(res => {
                 if (res.data.status) {
