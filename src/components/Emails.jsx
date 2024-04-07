@@ -13,16 +13,15 @@ import { useUser } from '../provider/UserProvider';
 const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
-    useEffect(() => {
-        axios.defaults.withCredentials = true;
-        axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify')
-            .then(res => {
-                if (res.data.status) {
-                } else {
-                    navigate('/login')
-                }
-            })
-    }, []);
+
+    axios.defaults.withCredentials = true;
+    axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify')
+        .then(res => {
+            if (res.data.status) {
+            } else {
+                navigate('/login')
+            }
+        })
 
     const [selectedEmails, setSelectedEmails] = useState([]);
     const [refreshScreen, setRefreshScreen] = useState(false);
