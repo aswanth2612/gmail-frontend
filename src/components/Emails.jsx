@@ -7,13 +7,14 @@ import { DeleteOutlined } from '@mui/icons-material';
 import Email from "./Email";
 import NoMails from '../components/common/NoMails';
 import { EMPTY_TABS } from '../constants/constant';
-import Axios from 'axios'
+import Axios from 'axios';
 import { useUser } from '../provider/UserProvider';
 
 const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
     useEffect(() => {
+        Axios.defaults.withCredentials = true;
         Axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify', {
             withCredentials: true
         })

@@ -7,11 +7,13 @@ const API_GMAIL = async (serviceUrlObject, requestData = {}, type) => {
         ...body
     } = requestData;
 
+    axios.defaults.withCredentials = true;
     return await axios({
         method: serviceUrlObject.method,
         url: `${import.meta.env.VITE_BACKEND_PATH}/${serviceUrlObject.endpoint}/${type}`,
         params: requestData,
-        data: requestData
+        data: requestData,
+        withCredentials: true
     })
 }
 
