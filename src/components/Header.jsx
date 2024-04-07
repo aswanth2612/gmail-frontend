@@ -49,11 +49,11 @@ const Header = ({ toggleDrawer }) => {
     const currentUser = useUser();
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate()
-
-    axios.defaults.withCrendentials = true;
     const handleLogout = (e) => {
         e.preventDefault()
-        axios.get(import.meta.env.VITE_BACKEND_PATH + '/logout', {}).then(response => {
+        axios.get(import.meta.env.VITE_BACKEND_PATH + '/logout', {
+            withCredentials: true
+        }).then(response => {
             navigate('/login')
         }).catch(err => {
         })

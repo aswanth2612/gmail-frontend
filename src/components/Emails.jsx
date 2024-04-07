@@ -13,9 +13,10 @@ import { useUser } from '../provider/UserProvider';
 const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
-    Axios.defaults.withCredentials = true;
     useEffect(() => {
-        Axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify')
+        Axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify', {
+            withCredentials: true
+        })
             .then(res => {
                 if (res.data.status) {
                 } else {
