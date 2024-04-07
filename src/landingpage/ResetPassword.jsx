@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../App.css';
-import Axios from 'axios'
+import axios from 'axios'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 
 
@@ -12,7 +12,7 @@ const ResetPassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Axios.post(import.meta.env.VITE_BACKEND_PATH + "/reset-password/" + token, { password }).then(response => {
+        axios.post(import.meta.env.VITE_BACKEND_PATH + "/reset-password/" + token, { password }).then(response => {
             if (response.data.status) {
                 navigate('/login')
             }

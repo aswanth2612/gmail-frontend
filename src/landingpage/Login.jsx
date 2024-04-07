@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../App.css';
-import Axios from 'axios'
+import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom';
 import { useUserDispatch } from '../provider/UserProvider';
 
@@ -15,9 +15,9 @@ const Login = () => {
     const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.defaults.withCredentials = true;
-        Axios.post(import.meta.env.VITE_BACKEND_PATH + '/login', { email, password },
-            { withCredentials: true }).then(response => {
+        axios.defaults.withCredentials = true;
+        axios.post(import.meta.env.VITE_BACKEND_PATH + '/login', { email, password })
+            .then(response => {
                 if (response.data.status) {
                     setUser({
                         username: response.data.username,

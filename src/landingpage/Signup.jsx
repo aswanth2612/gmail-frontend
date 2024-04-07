@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../App.css';
-import Axios from 'axios'
+import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 
 const Signup = () => {
@@ -13,7 +13,7 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.post(import.meta.env.VITE_BACKEND_PATH + '/signup', { username, email, password }).then(response => {
+        axios.post(import.meta.env.VITE_BACKEND_PATH + '/signup', { username, email, password }).then(response => {
             if (response.data.status) {
                 navigate('/login')
             }

@@ -52,9 +52,7 @@ const Header = ({ toggleDrawer }) => {
     const handleLogout = (e) => {
         e.preventDefault()
         axios.defaults.withCredentials = true;
-        axios.get(import.meta.env.VITE_BACKEND_PATH + '/logout', {
-            withCredentials: true
-        }).then(response => {
+        axios.get(import.meta.env.VITE_BACKEND_PATH + '/logout').then(response => {
             navigate('/login')
         }).catch(err => {
         })
