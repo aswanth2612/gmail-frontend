@@ -14,7 +14,7 @@ const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
 
-    axios.defaults.withCredentials = true;
+    /*axios.defaults.withCredentials = true;
     axios.defaults.baseURL = 'https://api.example.com';
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -24,7 +24,7 @@ const Emails = ({ state }) => {
             } else {
                 navigate('/login')
             }
-        })
+        })*/
 
     const [selectedEmails, setSelectedEmails] = useState([]);
     const [refreshScreen, setRefreshScreen] = useState(false);
