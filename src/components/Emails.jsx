@@ -15,6 +15,7 @@ const Emails = ({ state }) => {
     const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
+    axios.defaults.headers.common.Authorisation = 'Bearer ' + currentUser.token;
     axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify')
         .then(res => {
             if (res.data.status) {
