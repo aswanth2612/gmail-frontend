@@ -15,9 +15,9 @@ const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
 
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
-    apiservice.get('/verify')
+    apiservice.defaults.withCredentials = true;
+    apiservice.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
+    apiservice.get('/verify', {token: currentUser.token})
         .then(res => {
             if (res.data.status) {
             } else {
