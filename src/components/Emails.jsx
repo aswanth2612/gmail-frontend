@@ -7,7 +7,6 @@ import { DeleteOutlined } from '@mui/icons-material';
 import Email from "./Email";
 import NoMails from '../components/common/NoMails';
 import { EMPTY_TABS } from '../constants/constant';
-import axios from 'axios';
 import { useUser } from '../provider/UserProvider';
 import apiservice from '../services/ApiService';
 

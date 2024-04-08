@@ -10,7 +10,7 @@ import AppsOutlinedIcon from '@mui/icons-material/AppsOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { gmailLogo } from "../constants/constant";
 import LogoutIcon from '@mui/icons-material/Logout';
-import axios from 'axios';
+import apiservice from '../services/ApiService';
 import { useUser } from '../provider/UserProvider';
 
 const StyledAppBar = styled(AppBar)({
@@ -51,8 +51,9 @@ const Header = ({ toggleDrawer }) => {
     const navigate = useNavigate()
     const handleLogout = (e) => {
         e.preventDefault()
-        axios.defaults.withCredentials = true;
-        axios.get(import.meta.env.VITE_BACKEND_PATH + '/logout').then(response => {
+        apiservice.defaults.withCredentials = true;
+        apiservice.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
+        apiservice.get('/logout').then(response => {
             navigate('/login')
         }).catch(err => {
         })

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../App.css';
-import axios from 'axios'
+import authservice from '../services/AuthService';
 import { useNavigate, Link } from 'react-router-dom'
 
 const Signup = () => {
@@ -12,8 +12,8 @@ const Signup = () => {
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.post(import.meta.env.VITE_BACKEND_PATH + '/signup', { username, email, password }).then(response => {
+        e.preventDefault();
+        authservice.post('/signup', { username, email, password }).then(response => {
             if (response.data.status) {
                 navigate('/login')
             }

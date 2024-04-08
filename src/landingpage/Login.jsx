@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import '../App.css';
-import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom';
 import { useUserDispatch } from '../provider/UserProvider';
+import authservice from '../services/AuthService';
 
 const Login = () => {
 
@@ -15,8 +15,7 @@ const Login = () => {
   const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post(import.meta.env.VITE_BACKEND_PATH + '/login',
-      { email, password })
+    authservice.post('/login', { email, password })
       .then(response => {
         if (response.data.status) {
           setUser({
