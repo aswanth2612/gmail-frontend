@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../App.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUserDispatch } from '../provider/UserProvider';
-import authservice from '../services/AuthService';
+import axios from 'axios';
 
 const Login = () => {
 
@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault()
-    authservice.post('/login', { email, password })
+    axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/login`, { email, password })
       .then(response => {
         if (response.data.status) {
           setUser({
@@ -32,6 +32,7 @@ const Login = () => {
           navigate('/email/index')
         }
       }).catch(err => {
+        console.log(err);
       })
   }
 

@@ -8,21 +8,21 @@ import Email from "./Email";
 import NoMails from '../components/common/NoMails';
 import { EMPTY_TABS } from '../constants/constant';
 import { useUser } from '../provider/UserProvider';
-import apiservice from '../services/ApiService';
+import axios from 'axios';
 
 const Emails = ({ state }) => {
-    const currentUser = useUser();
-    const navigate = useNavigate();
+  const currentUser = useUser();
+  const navigate = useNavigate();
 
-    apiservice.defaults.withCredentials = true;
-    apiservice.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
-    apiservice.get('/verify', {token: currentUser.token})
-        .then(res => {
-            if (res.data.status) {
-            } else {
-                navigate('/login')
-            }
-        });
+  axios.defaults.withCredentials = true;
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
+  axios.get(`${import.meta.env.VITE_BACKEND_PATH}/auth/verify`, {token: currentUser.token})
+    .then(res => {
+        if (res.data.status) {
+        } else {
+            navigate('/login')
+        }
+    });
 
     const [selectedEmails, setSelectedEmails] = useState([]);
     const [refreshScreen, setRefreshScreen] = useState(false);

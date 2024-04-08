@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
 import '../App.css';
-import authservice from '../services/AuthService';
 import { useNavigate, Link } from 'react-router-dom'
 
 const Signup = () => {
 
-    const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        authservice.post('/signup', { username, email, password }).then(response => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/signup`,
+     { username, email, password }).then(response => {
             if (response.data.status) {
                 navigate('/login')
             }

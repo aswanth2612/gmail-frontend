@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../App.css';
-import authservice from '../services/AuthService';
 import { useNavigate, Link } from 'react-router-dom'
+import axios from 'axios';
 
 
 const ForgotPassword = () => {
@@ -10,7 +10,8 @@ const ForgotPassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        authservice.post("/forgot-password", { email }).then(response => {
+        axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/forgot-password`,
+         { email }).then(response => {
             if (response.data.status) {
                 alert("chech your email for reset password")
                 navigate('/login')
