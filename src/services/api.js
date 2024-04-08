@@ -14,6 +14,9 @@ const API_GMAIL = async (serviceUrlObject, requestData = {}, type) => {
         params: requestData,
         data: requestData,
         withCredentials: true,
+        headers: {
+            'Access-Control-Allow-Origin': true,
+        }
     })
 }
 
