@@ -11,12 +11,15 @@ import { useUser } from '../provider/UserProvider';
 import axios from 'axios';
 
 const Emails = ({ state }) => {
-  const currentUser = useUser();
-  const navigate = useNavigate();
+    const currentUser = useUser();
+    const navigate = useNavigate();
 
-  axios.defaults.withCredentials = true;
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
-  axios.get(`${import.meta.env.VITE_BACKEND_PATH}/auth/verify`, {token: currentUser.token})
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
+    axios.get(`${import.meta.env.VITE_BACKEND_PATH}/auth/verify`,{
+        params: {token: currentUser.token},
+        data: {token: currentUser.token},
+    })
     .then(res => {
         if (res.data.status) {
         } else {
