@@ -12,7 +12,8 @@ const API_GMAIL = async (serviceUrlObject, requestData = {}, type) => {
         method: serviceUrlObject.method,
         url: `${import.meta.env.VITE_BACKEND_PATH}/${serviceUrlObject.endpoint}/${type}`,
         params: requestData,
-        data: requestData
+        data: requestData,
+        withCredentials: true,
     })
 }
 

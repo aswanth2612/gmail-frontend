@@ -9,22 +9,21 @@ import NoMails from '../components/common/NoMails';
 import { EMPTY_TABS } from '../constants/constant';
 import axios from 'axios';
 import { useUser } from '../provider/UserProvider';
+import apiservice from '../services/ApiService';
 
 const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
 
-    /*axios.defaults.withCredentials = true;
-    axios.defaults.baseURL = 'https://api.example.com';
+    axios.defaults.withCredentials = true;
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
-    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-    axios.get(import.meta.env.VITE_BACKEND_PATH + '/verify')
+    apiservice.get('/verify')
         .then(res => {
             if (res.data.status) {
             } else {
                 navigate('/login')
             }
-        })*/
+        });
 
     const [selectedEmails, setSelectedEmails] = useState([]);
     const [refreshScreen, setRefreshScreen] = useState(false);
