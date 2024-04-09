@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import '../App.css';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom'
 import axios from 'axios';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -61,12 +60,12 @@ const ResetPassword = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="/login" variant="body2">
+              <Link to="/login" variant="body2">
                   {"I already have an account? Login"}
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link to="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
