@@ -48,7 +48,7 @@ const Signup = () => {
               required
               fullWidth
               id="username"
-              label="User Name Address"
+              label="Full Name"
               name="username"
               autoComplete="username"
               autoFocus
@@ -85,8 +85,6 @@ const Signup = () => {
               Signup
             </Button>
             <Grid container>
-              <Grid item xs>
-              </Grid>
               <Grid item>
                 <Link href="/login" variant="body2">
                   {"I already have an account? Login"}
@@ -99,4 +97,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default Signup;
