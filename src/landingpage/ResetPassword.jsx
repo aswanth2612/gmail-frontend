@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import '../App.css';
-import { useNavigate, Link, useParams } from 'react-router-dom'
+import { useNavigate, Link, useParams, useSearchParams } from 'react-router-dom'
 import axios from 'axios';
 
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('')
-    const { token } = useParams()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/reset-password / ${ token } `,
+        axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/reset-password?token=${ searchParams.get("token") }`,
          { password }).then(response => {
             if (response.data.status) {
                 navigate('/login')
