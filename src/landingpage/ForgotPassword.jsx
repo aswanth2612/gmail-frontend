@@ -21,8 +21,10 @@ const ForgotPassword = () => {
     {params: { email }},
     {data: { email }}).then(response => {
             if (response.data.status) {
-                alert("chech your email for reset password")
                 navigate('/resetPassword?token='+response.data.token)
+            } else {
+              alert("User not exist");
+              navigate("/login");
             }
         }).catch(err => {
         })
