@@ -17,13 +17,13 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/forgot-password`,
-         { email }).then(response => {
+    axios.get(`${import.meta.env.VITE_BACKEND_PATH}/auth/forgot-password`,
+    {params: { email }},
+    {data: { email }}).then(response => {
             if (response.data.status) {
                 alert("chech your email for reset password")
-                navigate('/login')
+                navigate('/resetPassword?token='+response.data.token)
             }
-
         }).catch(err => {
         })
     }
