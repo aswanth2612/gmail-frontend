@@ -35,6 +35,9 @@ const Emails = ({ state }) => {
         }).then(res => {
             if (res.data.status) {
             } else {
+                removeCookie("username", response.data.username);
+                removeCookie("email", response.data.email);
+                removeCookie("token", response.data.token);
                 navigate('/login')
             }
         }).catch(() => {
