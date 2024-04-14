@@ -13,17 +13,19 @@ const ErrorComponent = lazy(() => import('./components/common/ErrorComponent'));
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/" element={<Navigate to={`${routes.emails.path}/inbox`} />}></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/signup" element={<Signup />}></Route>
-      <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
-      <Route path="/resetPassword" element={<ResetPassword />}></Route>
-      <Route path={routes.main.path} element={<Navigate to={`${routes.emails.path}/inbox`} />} />
+      <Route path="/" element={<Navigate to={"/login"} />}></Route>
+      <Route path="/login" element={<Login />} errorElement={<ErrorComponent />} fallback={<SuspenseLoader />}></Route>
+      <Route path="/signup" element={<Signup />} errorElement={<ErrorComponent />} fallback={<SuspenseLoader />}></Route>
+      <Route path="/forgotPassword" element={<ForgotPassword />} errorElement={<ErrorComponent />} fallback={<SuspenseLoader />}></Route>
+      <Route path="/resetPassword" element={<ResetPassword />} errorElement={<ErrorComponent />} fallback={<SuspenseLoader />}></Route>
       <Route path={routes.main.path} element={<routes.main.element />}>
         <Route path={`${routes.emails.path}/:type`} element={<routes.emails.element />} errorElement={<ErrorComponent />} />
         <Route path={routes.view.path} element={<routes.view.element />} errorElement={<ErrorComponent />} />
       </Route>
-      <Route path={routes.invalid.path} element={<Navigate to={`${routes.emails.path}/inbox`} />} />
+      <Route path={routes.invalid.path} element={<Navigate to={"/login"} />}
+        errorElement={<ErrorComponent />}
+        fallback={<SuspenseLoader />}
+      />
     </Route>
   )
 )
@@ -32,7 +34,7 @@ function App() {
   return (
     <UserProvider>
       <Suspense fallback={<SuspenseLoader />}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router} fallback={<SuspenseLoader />} />
       </Suspense>
     </UserProvider>
   )

@@ -14,50 +14,50 @@ import { useUser } from '../provider/UserProvider';
 import axios from 'axios';
 
 const StyledAppBar = styled(AppBar)({
-  background: "#F5F5F5",
-  boxShadow: "none"
+    background: "#F5F5F5",
+    boxShadow: "none"
 });
 
 const SearchWrapper = styled(Box)({
-  background: "#EAF1FB",
-  marginLeft: 80,
-  borderRadius: 8,
-  minWidth: 690,
-  maxWidth: 720,
-  height: 48,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0 20px',
-  '& > div': {
-    width: '100%',
-    padding: '0 10px'
-  }
+    background: "#EAF1FB",
+    marginLeft: 80,
+    borderRadius: 8,
+    minWidth: 690,
+    maxWidth: 720,
+    height: 48,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '0 20px',
+    '& > div': {
+        width: '100%',
+        padding: '0 10px'
+    }
 });
 
 const OptionWrapper = styled(Box)({
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'end',
-  '& > svg': {
-    marginLeft: 20
-  }
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'end',
+    '& > svg': {
+        marginLeft: 20
+    }
 
 })
 
 const Header = ({ toggleDrawer }) => {
-  const currentUser = useUser();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const navigate = useNavigate()
-  const handleLogout = (e) => {
-    e.preventDefault()
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
-    axios.get(`${import.meta.env.VITE_BACKEND_PATH}/auth/logout`)
-        .then(response => {
-            navigate('/login')
-        }).catch(err => {
-        })
+    const currentUser = useUser();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const navigate = useNavigate()
+    const handleLogout = (e) => {
+        e.preventDefault()
+        axios.defaults.withCredentials = true;
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
+        axios.get(import.meta.env.VITE_BACKEND_PATH + '/auth/logout')
+            .then(response => {
+                navigate('/login')
+            }).catch(err => {
+            })
     }
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -83,18 +83,18 @@ const Header = ({ toggleDrawer }) => {
                     <TuneIcon color="action" />
                 </SearchWrapper>
                 <OptionWrapper>
-                <IconButton                        area-label="user"                     >
-                    <HelpOutlineIcon color="action" />
+                    <IconButton area-label="user" >
+                        <HelpOutlineIcon color="action" />
                     </IconButton>
                     <IconButton
                         area-label="user"
-                     >
-                    <SettingsOutlinedIcon color="action" />
+                    >
+                        <SettingsOutlinedIcon color="action" />
                     </IconButton>
                     <IconButton
                         area-label="user"
-                     >
-                    <AppsOutlinedIcon color="action" />
+                    >
+                        <AppsOutlinedIcon color="action" />
                     </IconButton>
                     <IconButton
                         area-label="user"

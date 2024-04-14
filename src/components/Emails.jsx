@@ -9,29 +9,15 @@ import NoMails from '../components/common/NoMails';
 import { EMPTY_TABS } from '../constants/constant';
 import { useUser } from '../provider/UserProvider';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
-
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
-    axios.get(`${import.meta.env.VITE_BACKEND_PATH}/auth/verify`,{
-        params: {token: currentUser.token},
-        data: {token: currentUser.token},
-    })
-    .then(res => {
-        if (res.data.status) {
-        } else {
-            navigate('/login')
-        }
-    });
-
+    const [cookies, setCookie] = useCookies(['username', 'email', 'token']);
     const [selectedEmails, setSelectedEmails] = useState([]);
     const [refreshScreen, setRefreshScreen] = useState(false);
-
     const { openDrawer } = useOutletContext();
-
     const params = useParams();
     const type = params.type;
 
@@ -40,7 +26,20 @@ const Emails = ({ state }) => {
     const deleteEmailService = useApi(API_URLS.deleteEmail);
 
     useEffect(() => {
-        getEmailServices.call({ to: currentUser.email }, type);
+        getEmailServices.call({ to: cookies.email }, type);
+        axios.defaults.withCredentials = true;
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + cookies.token;
+        axios.get(import.meta.env.VITE_BACKEND_PATH + '/auth/verify', {
+            params: { token: cookies.token },
+            data: { token: cookies.token },
+        }).then(res => {
+            if (res.data.status) {
+            } else {
+                navigate('/login')
+            }
+        }).catch(() => {
+            navigate("/error");
+        });
     }, [type, refreshScreen])
 
     const selectAllEmails = (e) => {

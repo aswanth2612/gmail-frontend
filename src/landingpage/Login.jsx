@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, lazy, useEffect } from 'react'
 import '../App.css';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate, RouterProvider } from 'react-router-dom';
 import { useUserDispatch } from '../provider/UserProvider';
 import axios from 'axios';
 import Button from "@mui/material/Button";
@@ -11,44 +11,103 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import SuspenseLoader from '../components/common/SuspenseLoader';
+import UserProvider from '../provider/UserProvider';
+import { FormControl } from '@mui/material';
+import { useCookies } from 'react-cookie';
 
+const ErrorComponent = lazy(() => import('../components/common/ErrorComponent'));
 
 const Login = () => {
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
+  const [cookies, setCookie] = useCookies(['username', 'email', 'token']);
   const [user, setUser] = useState('');
   const dispatch = useUserDispatch();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    rememberMe: false,
+  });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+  });
 
-  const navigate = useNavigate()
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { email: '', password: '' };
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+      valid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/login`, { email, password })
-      .then(response => {
-        if (response.data.status) {
-          setUser({
-            username: response.data.username,
-            email: response.data.email,
-            token: response.data.token
-          });
-          dispatch({
-            type: 'set',
-            username: response.data.username,
-            email: response.data.email,
-            token: response.data.token
-          });
-          navigate('/email/index')
-        }
-      }).catch(err => {
-        console.log(err);
-      })
+    if (validateForm()) {
+      axios.post(import.meta.env.VITE_BACKEND_PATH + '/auth/login',
+        { email: formData.email, password: formData.password })
+        .then(response => {
+          const newErrors = { email: '', password: '' };
+          if (response.data.status) {
+            setUser({
+              username: response.data.username,
+              email: response.data.email,
+              token: response.data.token
+            });
+            dispatch({
+              type: 'set',
+              username: response.data.username,
+              email: response.data.email,
+              token: response.data.token
+            });
+            setCookie("username", response.data.username);
+            setCookie("email", response.data.email);
+            setCookie("token", response.data.token);
+            navigate('/email/index')
+          } else {
+            if (response.data.error_code === 'AS001') {
+              newErrors.email = 'Email Address Not Found';
+              newErrors.password = ' ';
+            } else if (response.data.error_code === 'AS002') {
+              newErrors.password = 'Password is Incorrect!!!';
+            }
+            setErrors(newErrors);
+          }
+        }).catch(err => {
+          console.log(err);
+          navigate("/error");
+        })
+    }
   }
+
+  const handleChange = (e) => {
+    const { name, value, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: name === 'rememberMe' ? checked : value,
+    });
+  };
+
+  useEffect(() => {
+    if (cookies.token && cookies.token != '') {
+      navigate("/emails/index");
+    }
+  })
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
-        sx={{  
+        sx={{
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
@@ -66,7 +125,10 @@ const Login = () => {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
+            error={Boolean(errors.email)}
+            helperText={errors.email}
           />
           <TextField
             margin="normal"
@@ -77,19 +139,24 @@ const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
+            error={Boolean(errors.password)}
+            helperText={errors.password}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
+            label="Remember Me"
+            sx={{ mt: 1, textAlign: 'left' }}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            color="primary"
           >
-            Sign In
+            Login
           </Button>
           <Grid container>
             <Grid item xs>

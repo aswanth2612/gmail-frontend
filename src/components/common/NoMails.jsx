@@ -18,8 +18,8 @@ const StyledDivider = styled(Divider) ({
 const NoMails = ({ message }) => {
     return (
         <Component>
-            <Typography>{message.heading}</Typography>
-            <Typography>{message.subHeading}</Typography>
+            <Typography>{message && message.heading}</Typography>
+            <Typography>{message && message.subHeading}</Typography>
             <StyledDivider />
         </Component>
     )
