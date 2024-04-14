@@ -100,6 +100,17 @@ const Login = () => {
 
   useEffect(() => {
     if (cookies.token && cookies.token != '') {
+      setUser({
+        username: cookies.username,
+        email: cookies.email,
+        token: cookies.token
+      });
+      dispatch({
+        type: 'set',
+        username: cookies.username,
+        email: cookies.email,
+        token: cookies.token
+      });
       navigate("/emails/inbox");
     }
   })
