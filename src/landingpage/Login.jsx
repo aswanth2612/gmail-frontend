@@ -100,7 +100,7 @@ const Login = () => {
 
   useEffect(() => {
     if (cookies.token && cookies.token != '') {
-      navigate("/emails/index");
+      navigate("/emails/inbox");
     }
   })
 

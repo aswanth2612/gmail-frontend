@@ -13,16 +13,52 @@ import Container from "@mui/material/Container";
 
 const Signup = () => {
   // State
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    username: '',
+  });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    username: ''
+  });
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   // Navigation
   const navigate = useNavigate()
   // Evetss
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { username: '', email: '', password: '' };
+
+    if (!formData.username) {
+      newErrors.username = 'User Name is required';
+      valid = false;
+    }
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+      valid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post(import.meta.env.VITE_BACKEND_PATH + '/auth/signup',
-      { username, email, password }).then(response => {
+      {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      }).then(response => {
         if (response.data.status) {
           navigate('/login')
         }
@@ -51,7 +87,10 @@ const Signup = () => {
             name="username"
             autoComplete="username"
             autoFocus
-            onChange={(e) => setUsername(e.target.value)}
+            value={formData.username}
+            onChange={handleChange}
+            error={Boolean(errors.username)}
+            helperText={errors.username}
           />
           <TextField
             margin="normal"
@@ -62,7 +101,10 @@ const Signup = () => {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
+            error={Boolean(errors.email)}
+            helperText={errors.email}
           />
           <TextField
             margin="normal"
@@ -73,7 +115,10 @@ const Signup = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
+            error={Boolean(errors.password)}
+            helperText={errors.password}
           />
           <Button
             type="submit"
