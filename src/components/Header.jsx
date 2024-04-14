@@ -12,129 +12,134 @@ import { gmailLogo } from "../constants/constant";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useUser } from '../provider/UserProvider';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 const StyledAppBar = styled(AppBar)({
-    background: "#F5F5F5",
-    boxShadow: "none"
+  background: "#F5F5F5",
+  boxShadow: "none"
 });
 
 const SearchWrapper = styled(Box)({
-    background: "#EAF1FB",
-    marginLeft: 80,
-    borderRadius: 8,
-    minWidth: 690,
-    maxWidth: 720,
-    height: 48,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 20px',
-    '& > div': {
-        width: '100%',
-        padding: '0 10px'
-    }
+  background: "#EAF1FB",
+  marginLeft: 80,
+  borderRadius: 8,
+  minWidth: 690,
+  maxWidth: 720,
+  height: 48,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '0 20px',
+  '& > div': {
+    width: '100%',
+    padding: '0 10px'
+  }
 });
 
 const OptionWrapper = styled(Box)({
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'end',
-    '& > svg': {
-        marginLeft: 20
-    }
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'end',
+  '& > svg': {
+    marginLeft: 20
+  }
 
 })
 
 const Header = ({ toggleDrawer }) => {
-    const currentUser = useUser();
-    const [anchorEl, setAnchorEl] = useState(null);
-    const navigate = useNavigate()
-    const handleLogout = (e) => {
-        e.preventDefault()
-        axios.defaults.withCredentials = true;
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
-        axios.get(import.meta.env.VITE_BACKEND_PATH + '/auth/logout')
-            .then(response => {
-                navigate('/login')
-            }).catch(err => {
-            })
-    }
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const [cookies, setCookie, removeCookie] = useCookies(['username', 'email', 'token']);
+  const currentUser = useUser();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate()
+  const handleLogout = (e) => {
+    e.preventDefault()
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
+    axios.get(import.meta.env.VITE_BACKEND_PATH + '/auth/logout')
+      .then(response => {
+        removeCookie("username", response.data.username);
+        removeCookie("email", response.data.email);
+        removeCookie("token", response.data.token);
+        navigate('/login')
+      }).catch(err => {
+      })
+  }
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
-    return (
-        <StyledAppBar position="static">
-            <Toolbar>
-                <MenuIcon color="action" onClick={toggleDrawer} />
-                <img src={gmailLogo} alt="logo" style={{ width: 110, marginLeft: 15 }} />
-                <SearchWrapper>
-                    <SearchIcon color="action" />
-                    <InputBase
-                        placeholder='Search mail'
-                    />
-                    <TuneIcon color="action" />
-                </SearchWrapper>
-                <OptionWrapper>
-                    <IconButton area-label="user" >
-                        <HelpOutlineIcon color="action" />
-                    </IconButton>
-                    <IconButton
-                        area-label="user"
-                    >
-                        <SettingsOutlinedIcon color="action" />
-                    </IconButton>
-                    <IconButton
-                        area-label="user"
-                    >
-                        <AppsOutlinedIcon color="action" />
-                    </IconButton>
-                    <IconButton
-                        area-label="user"
-                        onClick={handleClick}
-                    >
-                        <AccountCircleOutlinedIcon aria-describedby={"user"} color="action" />
-                    </IconButton>
-                    <Popover
-                        id={id}
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                    >
-                        <Typography sx={{ p: 2 }}>{currentUser.username}</Typography>
-                        <Button
-                            component="label"
-                            variant=""
-                            startIcon={<LogoutIcon />}
-                            fullWidth={true}
-                            onClick={handleLogout}
-                        >
-                            Logout
+  return (
+    <StyledAppBar position="static">
+      <Toolbar>
+        <MenuIcon color="action" onClick={toggleDrawer} />
+        <img src={gmailLogo} alt="logo" style={{ width: 110, marginLeft: 15 }} />
+        <SearchWrapper>
+          <SearchIcon color="action" />
+          <InputBase
+            placeholder='Search mail'
+          />
+          <TuneIcon color="action" />
+        </SearchWrapper>
+        <OptionWrapper>
+          <IconButton area-label="user" >
+            <HelpOutlineIcon color="action" />
+          </IconButton>
+          <IconButton
+            area-label="user"
+          >
+            <SettingsOutlinedIcon color="action" />
+          </IconButton>
+          <IconButton
+            area-label="user"
+          >
+            <AppsOutlinedIcon color="action" />
+          </IconButton>
+          <IconButton
+            area-label="user"
+            onClick={handleClick}
+          >
+            <AccountCircleOutlinedIcon aria-describedby={"user"} color="action" />
+          </IconButton>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+          >
+            <Typography sx={{ p: 2 }}>{currentUser.username}</Typography>
+            <Button
+              component="label"
+              variant=""
+              startIcon={<LogoutIcon />}
+              fullWidth={true}
+              onClick={handleLogout}
+            >
+              Logout
                         </Button>
-                    </Popover>
-                </OptionWrapper>
-            </Toolbar>
-        </StyledAppBar>
-    )
+          </Popover>
+        </OptionWrapper>
+      </Toolbar>
+    </StyledAppBar>
+  )
 }
 
 const openUserDlg = () => {
-    setOpenUser(true);
+  setOpenUser(true);
 }
 
 export default Header;
