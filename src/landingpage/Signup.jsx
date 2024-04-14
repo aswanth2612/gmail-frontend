@@ -110,7 +110,6 @@ const Signup = () => {
             label="Email Address"
             name="email"
             autoComplete="email"
-            autoFocus
             value={formData.email}
             onChange={handleChange}
             error={Boolean(errors.email)}

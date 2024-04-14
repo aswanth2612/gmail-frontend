@@ -12,25 +12,54 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 const ResetPassword = () => {
-    const [password, setPassword] = useState('')
-    const [searchParams, setSearchParams] = useSearchParams()
-
-    const navigate = useNavigate()
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post(`${import.meta.env.VITE_BACKEND_PATH}/auth/reset-password?token=${ searchParams.get("token") }`,
-         { password }).then(response => {
-            if (response.data.status) {
-                navigate('/login')
-            }
-        }).catch(err => {
-        })
+  // State
+  const [formData, setFormData] = useState({
+    password: '',
+  });
+  const [errors, setErrors] = useState({
+    password: '',
+  });
+  const [password, setPassword] = useState('')
+  // Navigation
+  const navigate = useNavigate()
+  // Evetss
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { password: '' };
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      valid = false;
     }
-    return (
-        <Container component="main" maxWidth="xs">
+    setErrors(newErrors);
+    return valid;
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      axios.post(import.meta.env.VITE_BACKEND_PATH + '/auth/reset-password?token=' + searchParams.get("token"),
+        { password: formData.password }
+      ).then(response => {
+        if (response.data.status) {
+          navigate('/login')
+        }
+      }).catch(err => {
+      })
+    }
+  }
+  return (
+    <Container component="main" maxWidth="xs">
       <Box
-        sx={{  
+        sx={{
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
@@ -48,7 +77,10 @@ const ResetPassword = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
+            error={Boolean(errors.password)}
+            helperText={errors.password}
           />
           <Button
             type="submit"
@@ -61,7 +93,7 @@ const ResetPassword = () => {
           <Grid container>
             <Grid item xs>
               <Link to="/login" variant="body2">
-                  {"I already have an account? Login"}
+                {"I already have an account? Login"}
               </Link>
             </Grid>
             <Grid item>
@@ -73,7 +105,7 @@ const ResetPassword = () => {
         </Box>
       </Box>
     </Container>
-    )
+  )
 }
 
 export default ResetPassword;
