@@ -14,7 +14,7 @@ import { useCookies } from 'react-cookie';
 const Emails = ({ state }) => {
     const currentUser = useUser();
     const navigate = useNavigate();
-    const [cookies, setCookie] = useCookies(['username', 'email', 'token']);
+    const [cookies, setCookie, removeCookie] = useCookies(['username', 'email', 'token']);
     const [selectedEmails, setSelectedEmails] = useState([]);
     const [refreshScreen, setRefreshScreen] = useState(false);
     const { openDrawer } = useOutletContext();
@@ -35,9 +35,9 @@ const Emails = ({ state }) => {
         }).then(res => {
             if (res.data.status) {
             } else {
-                removeCookie("username", response.data.username);
-                removeCookie("email", response.data.email);
-                removeCookie("token", response.data.token);
+                removeCookie("username");
+                removeCookie("email");
+                removeCookie("token");
                 navigate('/login')
             }
         }).catch(() => {

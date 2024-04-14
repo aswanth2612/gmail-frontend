@@ -57,9 +57,9 @@ const Header = ({ toggleDrawer }) => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentUser.token;
     axios.get(import.meta.env.VITE_BACKEND_PATH + '/auth/logout')
       .then(response => {
-        removeCookie("username", response.data.username);
-        removeCookie("email", response.data.email);
-        removeCookie("token", response.data.token);
+        removeCookie("username");
+        removeCookie("email");
+        removeCookie("token");
         navigate('/login')
       }).catch(err => {
       })
