@@ -53,17 +53,19 @@ const Signup = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post(import.meta.env.VITE_BACKEND_PATH + '/auth/signup',
-      {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password
-      }).then(response => {
-        if (response.data.status) {
-          navigate('/login')
-        }
-      }).catch(err => {
-      })
+    if (validateForm()) {
+      axios.post(import.meta.env.VITE_BACKEND_PATH + '/auth/signup',
+        {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password
+        }).then(response => {
+          if (response.data.status) {
+            navigate('/login')
+          }
+        }).catch(err => {
+        })
+    }
   }
 
   const handleChange = (e) => {
