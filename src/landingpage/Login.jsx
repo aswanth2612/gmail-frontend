@@ -73,7 +73,7 @@ const Login = () => {
             setCookie("username", response.data.username);
             setCookie("email", response.data.email);
             setCookie("token", response.data.token);
-            navigate('/email/index')
+            navigate('/email/inbox')
           } else {
             if (response.data.error_code === 'AS001') {
               newErrors.email = 'Email Address Not Found';
