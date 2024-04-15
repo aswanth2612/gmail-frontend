@@ -10,6 +10,7 @@ import { EMPTY_TABS } from '../constants/constant';
 import { useUser } from '../provider/UserProvider';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import SuspenseLoader from './common/SuspenseLoader';
 
 const Emails = ({ state }) => {
   const currentUser = useUser();
@@ -73,23 +74,27 @@ const Emails = ({ state }) => {
               <DeleteOutlined onClick={(e) => deleteSelectedEmails(e)} />
             </>}
       </Box>
-      <List>
+      {getEmailServices?.isLoading === false ? <>
+        <List>
+          {
+            getEmailServices ?.response ?.map(email => (
+              <Email
+                key={email._id}
+                email={email}
+                selectedEmails={selectedEmails}
+                setRefreshScreen={setRefreshScreen}
+                setSelectedEmails={setSelectedEmails}
+              />
+            ))
+          }
+        </List>
         {
-          getEmailServices ?.response ?.map(email => (
-            <Email
-              key={email._id}
-              email={email}
-              selectedEmails={selectedEmails}
-              setRefreshScreen={setRefreshScreen}
-              setSelectedEmails={setSelectedEmails}
-            />
-          ))
-                 }
-      </List>
-      {
-        getEmailServices ?.response ?.length === 0 &&
-          <NoMails message={EMPTY_TABS[type]} />
+          getEmailServices ?.response ?.length === 0 &&
+            <NoMails message={EMPTY_TABS[type]} />
              }
+      </>
+        :
+        <SuspenseLoader />}
     </Box>
   )
 }
